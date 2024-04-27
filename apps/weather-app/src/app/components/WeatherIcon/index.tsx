@@ -16,6 +16,7 @@ type Props = {
 const ICONS = {
   'partly-cloudy-day': { src: cloudyDay, alt: 'Partly cloudy day' },
   cloudy: { src: cloudyDay, alt: 'Partly cloudy day' },
+  'clear-day': { src: sunny, alt: 'Rainy day' },
   sunny: { src: sunny, alt: 'Rainy day' },
   rain: { src: rainy, alt: 'Rainy day' },
   showers: { src: showers, alt: 'Showers weather' },
@@ -28,7 +29,7 @@ const SIZES = {
 };
 
 export default function WeatherIcon(props: Props) {
-  const icon = ICONS[props.icon];
+  const icon = ICONS[props.icon] || null;
   const size = SIZES[props.size || 'small'];
   if (!ICONS[props.icon]) console.log(props.icon);
   return (
