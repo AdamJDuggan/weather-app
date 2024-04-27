@@ -1,6 +1,6 @@
 'use client';
 // React
-import { useState, FormEvent, useMemo } from 'react';
+import { useState, FormEvent, useMemo, useEffect } from 'react';
 // Next.js
 import Image from 'next/image';
 // Google fonts
@@ -15,21 +15,21 @@ import celsiusButton from './assets/celciusButton.svg';
 import FarenheitButton from './assets/farenheitButton.svg';
 // Types
 import Day from './types/Day';
-// Mock data
-// import _days from './days';
 // Consts
 const CAPRIOLA = Capriola({ subsets: ['latin'], weight: '400' });
 const TEMPRETURE_SCALE_BUTTON_SIZE = 45;
+const DEFAULT_LOCATION = 'Brighton';
 
 export default function Index() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(false);
-  const [location, setLocation] = useState(false);
-  const [search, setSearch] = useState('');
+  const [location, setLocation] = useState(DEFAULT_LOCATION);
+  const [search, setSearch] = useState(DEFAULT_LOCATION);
   const [scale, setScale] = useState('fahrenheit');
   const [days, setDays] = useState(Array(6).fill(false));
 
   const onSearch = async () => {
+    setError(false);
     setDays(Array(6).fill(false));
     setPending(true);
     try {
@@ -54,17 +54,18 @@ export default function Index() {
         }))
       );
 
-      console.log(days);
-
       setError(false);
       setPending(false);
-      // datetime: day. tempmax, tempmin, humidity, cloudcover sunrise sunset
     } catch (err) {
-      setLocation(false);
+      setLocation('');
       setPending(false);
       setError(true);
     }
   };
+
+  useEffect(() => {
+    onSearch();
+  }, []);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -83,7 +84,7 @@ export default function Index() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <button type="submit">
+            <button type="submit" disabled={pending || !search.length}>
               <Image
                 src={arrowButton}
                 alt="Arrow pointing right"
@@ -91,12 +92,13 @@ export default function Index() {
                 height={30}
               />
             </button>
+            {error && (
+              <span className="error-message">
+                Error. Please try a different location
+              </span>
+            )}
           </form>
-          {error && (
-            <span className="error-message">
-              Error. Please try a different location
-            </span>
-          )}
+
           <div className="sidebar-data-container">
             <div>
               <Card
