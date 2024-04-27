@@ -38,7 +38,7 @@ export default function Index() {
       );
       const data = await response.json();
       const sixDays = data.days.slice(0, 6);
-      setLocation(data.address);
+      setLocation(data.resolvedAddress);
       setDays(
         sixDays.map((day: any) => ({
           conditions: day.conditions,
