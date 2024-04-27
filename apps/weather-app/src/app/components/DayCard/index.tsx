@@ -11,6 +11,7 @@ import { getShortDay } from '../../utils/formatDate';
 import TemperatureComponent from '../Temperaute';
 
 type Props = {
+  conditions: string;
   date: string;
   icon: Weather;
   high: number;
@@ -19,20 +20,13 @@ type Props = {
   scale: Temperature;
 };
 
-const WEATHER = {
-  sunny: 'Sunny',
-  cloudy: 'Partly cloudly',
-  showers: 'Showers',
-  rainy: 'Rain',
-};
-
 export default function DayCard(props: Props) {
   return (
     <div className={classnames(props.cardClass, 'card')}>
       <div className="day-card">
         <h2>{getShortDay(props.date)}</h2>
         <WeatherIcon icon={props.icon} />
-        <h3>{WEATHER[props.icon]}</h3>
+        <h3>{props.conditions}</h3>
         <div className="tempretures">
           <TemperatureComponent scale={props.scale} value={props.low} />
           <TemperatureComponent scale={props.scale} value={props.high} />

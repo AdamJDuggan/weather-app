@@ -1,6 +1,6 @@
 'use client';
 // React
-import { useState } from 'react';
+import { useState, FormEvent, useMemo } from 'react';
 // Next.js
 import Image from 'next/image';
 // Google fonts
@@ -10,27 +10,112 @@ import Card from './components/Card';
 import Temperaute from './components/Temperaute';
 import Time from './components/Time';
 // Assets
+import arrowButton from './assets/arrowButton.svg';
 import celsiusButton from './assets/celciusButton.svg';
 import FarenheitButton from './assets/farenheitButton.svg';
 // Types
 import Day from './types/Day';
 // Mock data
-import _days from './days';
+// import _days from './days';
 // Consts
 const CAPRIOLA = Capriola({ subsets: ['latin'], weight: '400' });
 const TEMPRETURE_SCALE_BUTTON_SIZE = 45;
 
-const days = _days; // Array(6).fill(false);
-
-const today = days[0]; //false;
-
 export default function Index() {
-  const [pending] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState(false);
+  const [location, setLocation] = useState(false);
+  const [search, setSearch] = useState('');
   const [scale, setScale] = useState('fahrenheit');
+  const [days, setDays] = useState(Array(6).fill(false));
+
+  const onSearch = async () => {
+    setDays(Array(6).fill(false));
+    setPending(true);
+    try {
+      const response = await fetch(
+        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${search}?unitGroup=us&key=${process.env.NEXT_PUBLIC_VISUAL_CROSSING_API_KEY}&contentType=json`
+      );
+      const data = await response.json();
+      const sixDays = data.days.slice(0, 6);
+      setLocation(data.address);
+      setDays(
+        sixDays.map((day: any) => ({
+          conditions: day.conditions,
+          datetime: day.datetime,
+          temp: day.temp,
+          tempmax: day.tempmax,
+          tempmin: day.tempmin,
+          humidity: day.humidity,
+          icon: day.icon,
+          cloudcover: day.cloudcover,
+          sunrise: day.sunrise,
+          sunset: day.sunset,
+        }))
+      );
+
+      console.log(days);
+
+      setError(false);
+      setPending(false);
+      // datetime: day. tempmax, tempmin, humidity, cloudcover sunrise sunset
+    } catch (err) {
+      setLocation(false);
+      setPending(false);
+      setError(true);
+    }
+  };
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await onSearch();
+  };
+
+  const today = useMemo(() => days[0] || false, [days]);
 
   return (
     <div className="wrapper" style={{ fontFamily: CAPRIOLA.style.fontFamily }}>
-      <aside></aside>
+      <aside className="sidebar-container">
+        <div className="sidebar">
+          <form onSubmit={onSubmit}>
+            <input
+              style={{ border: error ? '2px solid red' : '' }}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <button type="submit">
+              <Image
+                src={arrowButton}
+                alt="Arrow pointing right"
+                width={30}
+                height={30}
+              />
+            </button>
+          </form>
+          {error && (
+            <span className="error-message">
+              Error. Please try a different location
+            </span>
+          )}
+          <div className="sidebar-data-container">
+            <div>
+              <Card
+                type="today"
+                pending={pending}
+                ready={today && location}
+                data={{
+                  conditions: today.conditions,
+                  location,
+                  tempreture: today.temp,
+                  date: today.datetime,
+                  scale,
+                  icon: today.icon,
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </aside>
       <main className="main-content">
         <div className="header">
           <h2>Day overview</h2>
@@ -119,13 +204,14 @@ export default function Index() {
         <section className="five-day-forcast">
           <h2>5 Day Forcast</h2>
           <div className="day-cards">
-            {days.slice(1, 6).map((day: Day) => (
+            {days.slice(1, 6).map((day: Day, index: number) => (
               <Card
-                key={day.datetime}
+                key={index}
                 type="day"
                 ready={day}
                 pending={pending}
                 data={{
+                  conditions: day.conditions,
                   date: day.datetime,
                   icon: 'cloudy',
                   high: day.tempmax,

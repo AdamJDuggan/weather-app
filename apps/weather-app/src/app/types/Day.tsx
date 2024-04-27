@@ -1,4 +1,5 @@
 type Day = {
+  conditions: string;
   datetime: string;
   tempmax: number;
   tempmin: number;

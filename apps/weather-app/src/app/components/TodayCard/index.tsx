@@ -8,6 +8,7 @@ import Tempreture from '../../types/Tempreture';
 import Weather from '../../types/Weather';
 
 type Props = {
+  conditions: string;
   location: string;
   tempreture: number;
   date: string;
@@ -24,7 +25,7 @@ export default function TodayCard(props: Props) {
       <h3>
         <TempretureComponent scale={props.scale} value={props.tempreture} />
       </h3>
-      <h4>Sunny</h4>
+      <h4>{props.conditions}</h4>
     </>
   );
 }

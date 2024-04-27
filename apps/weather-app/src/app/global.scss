@@ -40,17 +40,13 @@ button {
   }
 }
 
-.padding {
-  padding: 40px 20px;
-}
-
 .card {
   position: relative;
   display: grid;
   place-items: center;
   background-color: $secondary;
   border-radius: 20px;
-  padding: 20px;
+  padding: 15px;
 }
 
 @keyframes loading {
@@ -143,7 +139,7 @@ button {
   background-color: #1e213a;
   display: grid;
   grid-template-rows: auto 1fr;
-  padding: 40px 20px;
+  padding: 30px 20px;
 
   form {
     display: grid;
@@ -190,7 +186,8 @@ button {
   display: grid;
   align-items: center;
   grid-template-columns: 1fr;
-  gap: 50px;
+  padding: 30px 20px;
+  gap: 30px;
   width: 100%;
   .header {
     display: flex;
@@ -215,7 +212,6 @@ button {
   gap: $cardGap;
 }
 .progress-card {
-  height: 187.08px;
   width: 100%;
   h2 {
     margin-bottom: 10px;
@@ -241,7 +237,6 @@ button {
     left: 0;
     top: 0;
     height: 100%;
-    width: 40%;
     border-radius: $progressBarBorderRadius;
   }
   .percent-symbol {
