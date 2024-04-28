@@ -17,6 +17,7 @@ import FarenheitButton from './assets/farenheitButton.svg';
 import sanitizeString from './utils/sanitizeString';
 // Types
 import Day from './types/Day';
+import Temperature from './types/Temperature';
 // Consts
 const CAPRIOLA = Capriola({ subsets: ['latin'], weight: '400' });
 const TEMPRETURE_SCALE_BUTTON_SIZE = 45;
@@ -27,7 +28,7 @@ export default function Index() {
   const [error, setError] = useState(false);
   const [location, setLocation] = useState(DEFAULT_LOCATION);
   const [search, setSearch] = useState(DEFAULT_LOCATION);
-  const [scale, setScale] = useState('fahrenheit');
+  const [scale, setScale] = useState<Temperature>('fahrenheit');
   const [days, setDays] = useState(Array(6).fill(false));
 
   const onSearch = async () => {
