@@ -1,4 +1,6 @@
-# Running the app
+# Using the app
+
+The app has been deployed to this public url `https://weather-app-topaz-rho-82.vercel.app/`
 
 To run the app locally you will need to add a .env file to the root directory with the key `NEXT_PUBLIC_VISUAL_CROSSING_API_KEY=yourApiKey`.
 
@@ -37,7 +39,7 @@ As much as possible I have used semantic html. For example, the sidebar is an <a
 # Potential performance bottlenecks and optimisations
 
 I have used the Next.js image component for optimization.
-I have deployed the app to GitHub pages for hosting and public access.
+I have deployed the app to Vercel for hosting and public access.
 The Figma prototype only had 4 weather images. With more time I would have requested or found more images (for example a cloudy image) to display more specific images in the app. For now I am using the ‘Partly cloudy day’ image as the default/fallback image.
 
 # High fault tolerance
