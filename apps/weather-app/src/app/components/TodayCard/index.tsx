@@ -4,7 +4,7 @@ import { getShortDay } from '../../utils/formatDate';
 import TempretureComponent from '../Temperaute';
 import WeatherIcon from '../WeatherIcon';
 // Models
-import Tempreture from '../../types/Tempreture';
+import Tempreture from '../../types/Temperature';
 import Weather from '../../types/Weather';
 
 type Props = {

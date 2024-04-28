@@ -67,9 +67,9 @@ export default function Index() {
     }
   };
 
-  // useEffect(() => {
-  //   onSearch();
-  // }, []);
+  useEffect(() => {
+    onSearch();
+  }, []);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
