@@ -12,6 +12,8 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  output: 'export', // Enables static exports
+  reactStrictMode: true,
 };
 
 const plugins = [
