@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 type Props = {
   title: string;
-  render: ReactNode;
+  render: () => ReactNode;
   cardClass: string;
 };
 
