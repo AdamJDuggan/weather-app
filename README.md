@@ -1,43 +1,39 @@
-# Weather App
+# Running the app
 
-![image 1](https://github.com/echo724/notion2md/assets/78376735/6b880ad1-3ff2-4cdd-8d06-ff708314772d)
+To run the app locally you will need to add a .env file to the root directory with the key `NEXT_PUBLIC_VISUAL_CROSSING_API_KEY=yourApiKey`.
 
-### Objective
+# Architectural choices
 
-Using a NX monorepo, TypeScript, React and Next.js your task is to build a Weather App.
+I used a css pseudo element to display the loading spinner on all the cards when the app is in ‘pending’ state (awaiting a response from the Visual Crossing api). Also to display the `...` empty state when there is no data. I thought this was better than the cards just disappearing then snapping back into view when data loads.
 
-### Brief
+I added a slight hover effect to the buttons and disabled the form button while the app is in ‘pending’ state.
 
-In England, we love talking about the weather. To help people have informed conversations about the weather; your assignment is to use data from the [Visual Crossing Weather API](https://www.visualcrossing.com/resources/documentation/weather-api/timeline-weather-api/) and display it so it looks like [this design document](https://www.figma.com/file/FNdVsOUJA53CWMW9mnraYk/Weather-App?type=design&node-id=0%3A1&t=FPsFSmGIgDaH48F6-1). It doesn't have to be pixel pefect- but should maintain functional and operational integrity when used on different types of devices with different screen resolutions.
+I have styled the temperature scale buttons to make it clear what scale (celsius or fahrenheit) is active.
 
-### Tasks
+I used css grid to display the rows of cards dynamically to work on screen sizes with a minimum width of 350px. With more time I would have created prototypes in Figma of mobile and tablet views and used these to set more specific responsive styles.
 
-Fork this branch and then design, organise, test, lint and document your code using the scenario of it being deployed to production and be used by a user base of approx. 5,000 daily active users.
+With more time I would also save the last searched location to localstorage. For example, the app loads with the weather for Brighton as default. The user searches for ‘New York’ and the app successfully fetches the data. The user closes the browser. When they next open the browser the app would fetch the New York data on initial render.
 
-You have complete freedom over how and how long you want to spend to deliver the following requirements:
+# Data sanitisation & validation
 
-- The app can be accessed through a public URL.
-- On first load, the app should show the weather for a specific place.
-- Users can see accurate and relevant weather information based on their search.
-- Users are able to see relevant information displayed in different metrics.
-- Users are notified if there is no information returned from their search.
+I wrote a sanitizeString function to strip whitespaces and HTML tags from the search input value before passing it to the fetch().
+I decided to display the resolved address from the api response in the sidebar card so it is clear what location the API returned from the users request. For example, misspelling Brighton and Brighon resolves to Brighton, New Brunswick in Canada.
+I added the .env file to the .gitignore file.
 
-### Development
+# Accessibility
 
-The NX monorepo handles tasks relating to your codebase. A few useful commands are:
+Alt tags added to all Images.
+I have ensured the user can submit the form by pressing the ‘Enter’ key.
+The value of the <title> element of the web page updates to reflect error, pending or success state of the form.
+I have added the aria-labelledby attribute to the input.
+As much as possible I have used semantic html. For example, the sidebar is an <aside> element and each group of cards in the <main> part of the app are wrapped in <section>.
 
-- Run development server `npx nx run weather-app:dev`
-- Run build `npx nx weather-app:build`
-- Run tests `npx nx weather-app:test`
+# Potential performance bottlenecks and optimisations
 
-More info on working with Next.js in NX can be found [here](https://nx.dev/packages/next#setting-up-next.js).
+I have used the Next.js image component for optimization.
+I have deployed the app to GitHub pages for hosting and public access.
+The Figma prototype only had 4 weather images. With more time I would have requested or found more images (for example a cloudy image) to display more specific images in the app. For now I am using the ‘Partly cloudy day’ image as the default/fallback image.
 
-### Implementation Details
+# High fault tolerance
 
-Please include some information that considers certain areas for future improvement such as:
-
-- Architectural choices.
-- Data sanitisation & validation.
-- Accessibility.
-- Potential performance bottle necks and optimisations
-- High fault tolerance.
+I looked at the API documentation to see if there is a route that returns all valid locations that api accepts. It does not exist. However, if it did I could have used this array of data to have a <select> input so the user has to choose an option from this list of valid locations as opposed to typing any string into the input.

@@ -13,6 +13,8 @@ import Time from './components/Time';
 import arrowButton from './assets/arrowButton.svg';
 import celsiusButton from './assets/celciusButton.svg';
 import FarenheitButton from './assets/farenheitButton.svg';
+// Utils
+import sanitizeString from './utils/sanitizeString';
 // Types
 import Day from './types/Day';
 // Consts
@@ -32,10 +34,15 @@ export default function Index() {
     setError(false);
     setDays(Array(6).fill(false));
     setPending(true);
+    setLocation('');
+    const query = sanitizeString(search);
     try {
       const response = await fetch(
-        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${search}?unitGroup=us&key=${process.env.NEXT_PUBLIC_VISUAL_CROSSING_API_KEY}&contentType=json`
+        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${query}?unitGroup=us&key=${process.env.NEXT_PUBLIC_VISUAL_CROSSING_API_KEY}&contentType=json`
       );
+
+      setError(false);
+      setPending(false);
       const data = await response.json();
       const sixDays = data.days.slice(0, 6);
       setLocation(data.resolvedAddress);
@@ -53,9 +60,6 @@ export default function Index() {
           sunset: day.sunset,
         }))
       );
-
-      setError(false);
-      setPending(false);
     } catch (err) {
       setLocation('');
       setPending(false);
@@ -63,9 +67,9 @@ export default function Index() {
     }
   };
 
-  useEffect(() => {
-    onSearch();
-  }, []);
+  // useEffect(() => {
+  //   onSearch();
+  // }, []);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -76,13 +80,25 @@ export default function Index() {
 
   return (
     <div className="wrapper" style={{ fontFamily: CAPRIOLA.style.fontFamily }}>
+      <title>
+        {error
+          ? 'Error'
+          : pending
+          ? 'Pending'
+          : location
+          ? `Weather for ${location}`
+          : 'Search for a location'}
+      </title>
       <aside className="sidebar-container">
         <div className="sidebar">
           <form onSubmit={onSubmit}>
             <input
+              type="text"
+              placeholder="Enter a location"
               style={{ border: error ? '2px solid red' : '' }}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              aria-labelledby="Search"
             />
             <button type="submit" disabled={pending || !search.length}>
               <Image
