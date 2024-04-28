@@ -29,7 +29,7 @@ const SIZES = {
 };
 
 export default function WeatherIcon(props: Props) {
-  const icon = ICONS[props.icon] || null;
+  const icon = ICONS[props.icon] || ICONS['partly-cloudy-day'];
   const size = SIZES[props.size || 'small'];
   if (!ICONS[props.icon]) console.log(props.icon);
   return (
