@@ -8,11 +8,17 @@ I used a css pseudo element to display the loading spinner on all the cards when
 
 I added a slight hover effect to the buttons and disabled the form button while the app is in ‘pending’ state.
 
-I have styled the temperature scale buttons to make it clear what scale (celsius or fahrenheit) is active.
+I have styled the temperature scale buttons to make it clear what scale (celsius or fahrenheit) is active. I thought it better to change the temperature scale client-side (using local state) rather than making a different network request with different query params.
 
 I used css grid to display the rows of cards dynamically to work on screen sizes with a minimum width of 350px. With more time I would have created prototypes in Figma of mobile and tablet views and used these to set more specific responsive styles.
 
 With more time I would also save the last searched location to localstorage. For example, the app loads with the weather for Brighton as default. The user searches for ‘New York’ and the app successfully fetches the data. The user closes the browser. When they next open the browser the app would fetch the New York data on initial render.
+
+I have used Typescript types to define the expected props for components.
+
+I have structured the code by creating directories for components, assets (images), types and utils (utility function) to make the code readable and the app scalable.
+
+I have used sass to structure the css and to create variables for reusable values such as `$primaryColor: #100e1d`.
 
 # Data sanitisation & validation
 
